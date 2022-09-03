@@ -4,6 +4,7 @@ fetch('https://openapi.programming-hero.com/api/news/categories')
     .then(data => displayMenu(data.data.news_category))
     .catch(err => console.log(err))
 const menuContainer = document.getElementById('menu-container');
+menuContainer.innerHTML = `<a href="#" class="col-md-1 col-sm-12">Home</a>`;
 const displayMenu = (categories) => {
     categories.forEach(category => {
         const a = document.createElement('a');
@@ -96,7 +97,7 @@ const showModal = (_id) => {
 const displayNewsDetails = (news) => {
     console.log(news);
     const { _id, title, total_view, author, details, rating, thumbnail_url } = news;
-    const { name, img } = author;
+    const { name, img, published_date } = author;
     const { number } = rating;
     if (name === null) {
         name = "No data found";
@@ -116,9 +117,10 @@ const displayNewsDetails = (news) => {
             <div class="modal-body">
                 <img src="${thumbnail_url}">
                 <p>${details}</p>
-                <p>Author: <img class="author-img" src="${img}"> ${name}</p>
-                <p>View:${total_view}</p>
-                <p>Rating:${number}</p>
+                <p>Author:  <img class="author-img" src="${img}"> ${name}</p>
+                <p>Published Date: ${published_date}</p>
+                <p>View: ${total_view}</p>
+                <p>Rating: ${number}</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -134,7 +136,7 @@ const displayNewsDetails = (news) => {
 const toggleSpinner = isLoading => {
     const loaderSection = document.getElementById('loader');
     if (isLoading) {
-        loaderSection.classList.remove('d-none')
+        loaderSection.classList.remove('d-none');
     } else {
         loaderSection.classList.add('d-none');
     }
