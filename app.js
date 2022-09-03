@@ -40,6 +40,8 @@ const displayNews = (newsAll, id) => {
     const items = newsAll.length;
     const linkTitle = document.getElementById(`${id}`).innerText;
     itemsContainer.innerText = `${items} items found for category ${linkTitle}`;
+    const [{ total_view }] = newsAll;
+    newsAll.sort((a, b) => a.total_view - b.total_view).reverse();
     newsAll.forEach((news) => {
         const { _id, title, total_view, author, details, thumbnail_url } = news;
         const { name, img } = author;
