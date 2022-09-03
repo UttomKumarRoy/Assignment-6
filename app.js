@@ -26,23 +26,28 @@ const allNews = (id) => {
     const url = `https://openapi.programming-hero.com/api/news/category/${id}`
     fetch(url)
         .then(res => res.json())
-        .then(data => displayNews(data.data))
+        .then(data => displayNews(data.data, id))
         .catch(err => console.log(err))
 }
 
 
 
-const displayNews = (newsAll) => {
+const displayNews = (newsAll, id) => {
     const newsContainer = document.getElementById('news-container');
     newsContainer.innerHTML = '';
+    const itemsContainer = document.getElementById('items-found');
+    const items = newsAll.length;
+    const linkTitle = document.getElementById(`${id}`).innerText;
+    itemsContainer.innerText = `${items} items found for category ${linkTitle}`;
     newsAll.forEach((news) => {
-        const { _id, title, total_view, author, image_url, details, thumbnail_url } = news;
+        const { _id, title, total_view, author, details, thumbnail_url } = news;
         const { name, img } = author;
         const div = document.createElement('div');
         div.classList.add('row');
+        div.classList.add('gy-5')
         div.innerHTML = `
                         <div class="col-3">
-                        <img class="img-fluid" src="${image_url}" alt="">
+                        <img class="img-fluid" src="${thumbnail_url}" alt="">
                         </div>
                         <div class="col-9">
                         <h3> ${title}</h3>
@@ -53,7 +58,8 @@ const displayNews = (newsAll) => {
                             <span><i class="fa-thin fa-eye"></i>${total_view}</span>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id='${_id}'>Author Info</button>
                         </p>
-                        </div>                     
+                        </div>  
+                        <br>                   
 `
         newsContainer.appendChild(div);
         document.getElementById(_id).addEventListener('click', () => {
@@ -73,7 +79,8 @@ const showModal = (_id) => {
 
 const displayNewsDetails = (news) => {
     console.log(news);
-    const { title } = news;
+    const { _id, title, total_view, author, details, thumbnail_url } = news;
+    const { name, img } = author;
     const modal = document.getElementById('modal');
     modal.innerHTML = `
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -84,11 +91,11 @@ const displayNewsDetails = (news) => {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ...
+                <img src="${thumbnail_url}">
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
