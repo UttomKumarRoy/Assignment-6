@@ -23,6 +23,7 @@ const displayMenu = (categories) => {
 
 
 const allNews = (id) => {
+    toggleSpinner(true);
     const url = `https://openapi.programming-hero.com/api/news/category/${id}`
     fetch(url)
         .then(res => res.json())
@@ -62,6 +63,7 @@ const displayNews = (newsAll, id) => {
                         <br>                   
 `
         newsContainer.appendChild(div);
+        toggleSpinner(false);
         document.getElementById(_id).addEventListener('click', () => {
             showModal(_id);
         })
@@ -101,4 +103,15 @@ const displayNewsDetails = (news) => {
     </div>
 </div>
     `
+}
+
+
+//loader section 
+const toggleSpinner = isLoading => {
+    const loaderSection = document.getElementById('loader');
+    if (isLoading) {
+        loaderSection.classList.remove('d-none')
+    } else {
+        loaderSection.classList.add('d-none');
+    }
 }
