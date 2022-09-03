@@ -1,4 +1,5 @@
 //news menu section 
+
 fetch('https://openapi.programming-hero.com/api/news/categories')
     .then(res => res.json())
     .then(data => displayMenu(data.data.news_category))
@@ -20,9 +21,7 @@ const displayMenu = (categories) => {
     });
 }
 
-
 //news section 
-
 
 const allNews = (id) => {
     toggleSpinner(true);
@@ -33,13 +32,16 @@ const allNews = (id) => {
         .catch(err => console.log(err))
 }
 
-
-
 const displayNews = (newsAll, id) => {
     const newsContainer = document.getElementById('news-container');
     newsContainer.innerHTML = '';
     const itemsContainer = document.getElementById('items-found');
     const items = newsAll.length;
+    if (items === 0) {
+        toggleSpinner(false);
+        const linkTitle = document.getElementById(`${id}`).innerText;
+        return itemsContainer.innerText = `No item found for category ${linkTitle}`;
+    }
     const linkTitle = document.getElementById(`${id}`).innerText;
     itemsContainer.innerText = `${items} items found for category ${linkTitle}`;
     const [{ total_view }] = newsAll;
@@ -85,6 +87,7 @@ const displayNews = (newsAll, id) => {
 }
 
 //Modal of details news info 
+
 const showModal = (_id) => {
     console.log(_id);
     const url = ` https://openapi.programming-hero.com/api/news/${_id}`;
@@ -141,3 +144,4 @@ const toggleSpinner = isLoading => {
         loaderSection.classList.add('d-none');
     }
 }
+window.onload = () => allNews('01');
