@@ -8,7 +8,8 @@ const displayMenu = (categories) => {
     categories.forEach(category => {
         const a = document.createElement('a');
         a.innerText = `${category.category_name}`;
-        a.classList.add('col');
+        a.classList.add('col-md-1');
+        a.classList.add('col-sm-12');
         a.setAttribute('id', `${category.category_id}`);
         a.setAttribute('href', '#');
         menuContainer.appendChild(a);
@@ -50,15 +51,16 @@ const displayNews = (newsAll, id) => {
         div.classList.add('gy-5');
         let results;
         if (details.length > 600) {
-            results = details.slice(0, 60);
+            results = details.slice(0, 600);
+            results += '  ...';
         } else {
             results = details;
         }
         div.innerHTML = `
-                        <div class="col-3">
+                        <div class="col-md-3 col-sm-12">
                             <img class="img-fluid" src="${thumbnail_url}" alt="">
                         </div>
-                        <div class="col-9">
+                        <div class="col-md-9 col-sm-12">
                         <h3> ${title}</h3>
                         <p>${results}</p>
                         <div class="d-flex justify-content-between">
@@ -83,6 +85,7 @@ const displayNews = (newsAll, id) => {
 
 //Modal of details news info 
 const showModal = (_id) => {
+    console.log(_id);
     const url = ` https://openapi.programming-hero.com/api/news/${_id}`;
     fetch(url)
         .then(res => res.json())
@@ -92,8 +95,15 @@ const showModal = (_id) => {
 
 const displayNewsDetails = (news) => {
     console.log(news);
-    const { _id, title, total_view, author, details, thumbnail_url } = news;
+    const { _id, title, total_view, author, details, rating, thumbnail_url } = news;
     const { name, img } = author;
+    const { number } = rating;
+    if (name === null) {
+        name = "No data found";
+    }
+    if (total_view === null) {
+        name = "No data found";
+    }
     const modal = document.getElementById('modal');
     modal.innerHTML = `
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -105,7 +115,10 @@ const displayNewsDetails = (news) => {
             </div>
             <div class="modal-body">
                 <img src="${thumbnail_url}">
-
+                <p>${details}</p>
+                <p>Author: <img class="author-img" src="${img}"> ${name}</p>
+                <p>View:${total_view}</p>
+                <p>Rating:${number}</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
