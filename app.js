@@ -47,20 +47,29 @@ const displayNews = (newsAll, id) => {
         const { name, img } = author;
         const div = document.createElement('div');
         div.classList.add('row');
-        div.classList.add('gy-5')
+        div.classList.add('gy-5');
+        let results;
+        if (details.length > 600) {
+            results = details.slice(0, 60);
+        } else {
+            results = details;
+        }
         div.innerHTML = `
                         <div class="col-3">
-                        <img class="img-fluid" src="${thumbnail_url}" alt="">
+                            <img class="img-fluid" src="${thumbnail_url}" alt="">
                         </div>
                         <div class="col-9">
                         <h3> ${title}</h3>
-                        <p>${details}</p>
-                        <p>
+                        <p>${results}</p>
+                        <div class="d-flex justify-content-between">
+                            <div>
                             <img class="author-img" src="${img}" alt="">
                             <span>${name}</span>
-                            <span><i class="fa-thin fa-eye"></i>${total_view}</span>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id='${_id}'>Author Info</button>
-                        </p>
+                            </div>
+                            <span><i class="fa-regular fa-eye"></i>
+                            ${total_view}</span>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id='${_id}'>News Details</button>
+                        </div>
                         </div>  
                         <br>                   
 `
